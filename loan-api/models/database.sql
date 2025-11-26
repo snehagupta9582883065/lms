@@ -1,0 +1,22 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) DEFAULT 'user',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE loans (
+    id SERIAL PRIMARY KEY,
+    amount DECIMAL(10, 2) NOT NULL,
+    tenure INTEGER NOT NULL,
+    purpose TEXT NOT NULL,
+    status VARCHAR(50) DEFAULT 'pending', 
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, 
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_loan_user_id ON loans(user_id);
+CREATE INDEX idx_loan_status ON loans(status);
